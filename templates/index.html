@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Summarization Tool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Reset all margins and paddings to zero, and apply box-sizing for consistent layout */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body styling for the webpage */
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow: auto;
+            transition: background 0.5s ease, color 0.5s ease;
+        }
+
+        /* Light Theme (Default) */
+        body.light {
+            background: linear-gradient(135deg, #74ebd5, #acb6e5);
+            color: #2c3e50;
+        }
+
+        /* Dark Theme */
+        body.dark {
+            background: linear-gradient(135deg, #2c3e50, #1a202c);
+            color: #ecf0f1;
+        }
+
+        /* Main container styling */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            padding: 30px;
+            border-radius: 15px;
+            position: relative;
+            z-index: 1;
+            transition: background 0.5s ease, box-shadow 0.5s ease;
+        }
+
+        /* Light theme container styling */
+        body.light .container {
+            background: #fff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Dark theme container styling */
+        body.dark .container {
+            background: #2d3436;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Title styling */
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 10px 0;
+            background: linear-gradient(90deg, #ff6f61, #ff9f43);
+            color: #fff;
+            border-radius: 10px;
+            position: relative;
+            top: 0;
+            width: 100%;
+            box-sizing: border-box;
+            opacity: 0;
+            transform: scale(0.95);
+            animation: titleFadeIn 1s ease forwards;
+        }
+
+        /* Title fade-in animation */
+        @keyframes titleFadeIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Dark theme title styling */
+        body.dark h1 {
+            background: linear-gradient(90deg, #00cec9, #0984e3);
+            color: #ecf0f1;
+        }
+
+        /* Textarea (input box) styling */
+        textarea {
+            width: 100%;
+            height: 180px;
+            padding: 15px;
+            border: 2px solid;
+            border-radius: 10px;
+            font-size: 1rem;
+            resize: vertical;
+            transition: border-color 0.3s ease, background 0.5s ease, color 0.5s ease;
+            margin-bottom: 20px;
+        }
+
+        /* Light theme textarea styling */
+        body.light textarea {
+            border-color: #e0e0e0;
+            background: #fff;
+            color: #2c3e50;
+        }
+
+        /* Dark theme textarea styling */
+        body.dark textarea {
+            border-color: #636e72;
+            background: #3b444b;
+            color: #ecf0f1;
+        }
+
+        /* Focus effect for the textarea */
+        textarea:focus {
+            border-color: #1abc9c;
+            outline: none;
+        }
+
+        /* Button group styling (Summarize and Clear buttons) */
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        /* Button styling for summarizing and clearing */
+        button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.1s ease, background 0.3s ease;
+        }
+
+        /* Light theme summarize button */
+        body.light button.summarize {
+            background: linear-gradient(90deg, #ff6f61, #ff9f43);
+            color: #fff;
+        }
+
+        /* Dark theme summarize button */
+        body.dark button.summarize {
+            background: linear-gradient(90deg, #00cec9, #0984e3);
+            color: #fff;
+        }
+
+        /* Light theme clear button */
+        body.light button.clear {
+            background: linear-gradient(90deg, #dfe6e9, #b2bec3);
+            color: #2c3e50;
+        }
+
+        /* Dark theme clear button */
+        body.dark button.clear {
+            background: linear-gradient(90deg, #636e72, #4b5e67);
+            color: #ecf0f1;
+        }
+
+        /* Button hover effects */
+        button:hover {
+            transform: scale(1.02);
+        }
+
+        /* Button active effect */
+        button:active {
+            transform: scale(0.98);
+        }
+
+        /* Theme toggle button styling */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            z-index: 2;
+        }
+
+        /* Light and dark theme color for the toggle button */
+        body.light .theme-toggle {
+            color: #fff;
+        }
+
+        body.dark .theme-toggle {
+            color: #74ebd5;
+        }
+
+        /* Hover effect for the theme toggle button */
+        .theme-toggle:hover {
+            transform: rotate(15deg);
+        }
+
+        /* Section for displaying input and summary */
+        .output-section {
+            margin-top: 25px;
+        }
+
+        /* Heading for the input and summary sections */
+        .output-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            border-left: 4px solid #1abc9c;
+            padding-left: 10px;
+            transition: color 0.5s ease;
+        }
+
+        /* Styling for the output boxes (input text and summary) */
+        .output-box {
+            padding: 15px;
+            border: 2px dashed;
+            border-radius: 10px;
+            font-size: 1rem;
+            white-space: pre-wrap;
+            min-height: 80px;
+            transition: border-color 0.5s ease, background 0.5s ease, color 0.5s ease;
+        }
+
+        /* Light theme output box */
+        body.light .output-box {
+            border-color: #dfe6e9;
+            background: #f8f9fa;
+            color: #2d3436;
+        }
+
+        /* Dark theme output box */
+        body.dark .output-box {
+            border-color: #636e72;
+            background: #3b444b;
+            color: #ecf0f1;
+        }
+
+        /* Keyword highlighting in the summary */
+        .keyword {
+            background-color: rgba(26, 188, 156, 0.3);
+            padding: 2px 4px;
+            border-radius: 4px;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Dark theme keyword styling */
+        body.dark .keyword {
+            background-color: rgba(26, 188, 156, 0.5);
+        }
+
+        /* Tooltip styling for keyword context */
+        .keyword .tooltip {
+            visibility: hidden;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            max-width: 300px;
+            text-align: center;
+        }
+
+        /* Tooltip visibility on hover */
+        .keyword:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Loading indicator styling */
+        #loading {
+            display: none;
+            text-align: center;
+            margin: 15px 0;
+            font-size: 1rem;
+            padding: 10px;
+            border-radius: 8px;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Loading pulse effect */
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        /* Particle background effect */
+        #particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Responsive styling for small screens */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8rem;
+                padding: 8px 0;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            textarea {
+                height: 120px;
+                font-size: 0.9rem;
+            }
+
+            button {
+                font-size: 1rem;
+                padding: 12px;
+            }
+
+            .output-section h3 {
+                font-size: 1.1rem;
+            }
+
+            .output-box {
+                font-size: 0.9rem;
+            }
+
+            .theme-toggle {
+                font-size: 1.2rem;
+                top: 15px;
+                right: 15px;
+            }
+
+            .keyword .tooltip {
+                max-width: 200px;
+                white-space: normal;
+            }
+        }
+    </style>
+</head>
+<body class="light">
+    <div class="container">
+        <h1>Text Summarization Tool</h1>
+        <textarea id="inputText" placeholder="Enter your text here..."></textarea>
+        <div class="button-group">
+            <button class="summarize" onclick="summarizeText()">Summarize</button>
+            <button class="clear" onclick="clearText()">Clear</button>
+        </div>
+        <div id="loading">Summarizing...</div>
+        <div class="output-section">
+            <h3>Original Text</h3>
+            <div id="inputOutput" class="output-box"></div>
+            <h3>Summary</h3>
+            <div id="summaryOutput" class="output-box"></div>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+    </div>
+    <div id="particles"></div>
+
+    <script>
+        // Function to toggle between light and dark themes
+        function toggleTheme() {
+            const body = document.body;
+            body.classList.toggle('dark');
+            body.classList.toggle('light');
+            const toggleButton = document.querySelector('.theme-toggle');
+            toggleButton.textContent = body.classList.contains('dark') ? '☀️' : '🌙';
+        }
+
+        // Function to handle text summarization
+        async function summarizeText() {
+            const inputText = document.getElementById('inputText').value;
+            if (!inputText) {
+                alert('Please enter some text to summarize');
+                return;
+            }
+
+            document.getElementById('loading').style.display = 'block'; // Show loading indicator
+
+            try {
+                // Simulate text summarization (API call or processing logic here)
+                const summary = `Summary of the input text: ${inputText.substring(0, 100)}...`;
+                document.getElementById('inputOutput').textContent = inputText;
+                document.getElementById('summaryOutput').textContent = summary;
+
+            } catch (error) {
+                console.error('Error during summarization:', error);
+            } finally {
+                document.getElementById('loading').style.display = 'none'; // Hide loading indicator
+            }
+        }
+
+        // Function to clear the input and output areas
+        function clearText() {
+            document.getElementById('inputText').value = '';
+            document.getElementById('inputOutput').textContent = '';
+            document.getElementById('summaryOutput').textContent = '';
+        }
+    </script>
+</body>
+</html>
