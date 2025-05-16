@@ -24,10 +24,12 @@ The app leverages NLP models and summarization algorithms:
 
 ---
 
-##  Requirements
+##  Requirements and output image
 
 Install the required dependencies:
 
 ```bash
 pip install -r requirements.txt
 
+
+![Image](https://github.com/user-attachments/assets/d009df7a-b96a-4b36-a014-24ad9ed2fa34)
