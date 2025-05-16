@@ -32,4 +32,3 @@ Install the required dependencies:
 pip install -r requirements.txt
 
 
-![Image](https://github.com/user-attachments/assets/d009df7a-b96a-4b36-a014-24ad9ed2fa34)
