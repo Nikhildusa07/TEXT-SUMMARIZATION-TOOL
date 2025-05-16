@@ -23,13 +23,13 @@ The app leverages NLP models and summarization algorithms:
 - **Extractive Summarization**: Uses Sumy to extract key sentences directly from the input.
 
 ---
-
+![Image](https://github.com/user-attachments/assets/584deff8-677b-457d-ba65-52a7523a5e43)
 ##  Requirements and output image
 
 Install the required dependencies:
 
 ```bash
 pip install -r requirements.txt
-# output
-![Image](https://github.com/user-attachments/assets/584deff8-677b-457d-ba65-52a7523a5e43)
+
+
 
