@@ -49,7 +49,6 @@ Install the required dependencies:
 
 
 ## output
-
-
+![Image](https://github.com/user-attachments/assets/584deff8-677b-457d-ba65-52a7523a5e43)
 
 
