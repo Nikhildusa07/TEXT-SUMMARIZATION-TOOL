@@ -21,7 +21,7 @@
 Text Summarizer is a Flask-based NLP application that automatically generates concise summaries from large bodies of text using state-of-the-art **abstractive** and **extractive** techniques. It supports raw text, PDF, and DOCX inputs, and features a clean, interactive web interface.
 ---
 
-## Features
+## FEATURES
 
 - Paste text or upload PDF/DOCX files
 - Choose between **Abstractive** or **Extractive** summarization
@@ -32,7 +32,7 @@ Text Summarizer is a Flask-based NLP application that automatically generates co
 
 ---
 
-##  How It Works
+##  HOW IT WORKS
 
 The app leverages NLP models and summarization algorithms:
 
@@ -41,7 +41,7 @@ The app leverages NLP models and summarization algorithms:
 
 
 
-##  Requirements 
+##  REQUIREMENTS
 
 Install the required dependencies:
 
