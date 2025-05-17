@@ -7,16 +7,16 @@
 
 *INTERN ID*: C0DF113
 
-*DOMAIN*: NATURAL LANGUAGE PROCESSING
+*DOMAIN*: Artificial Intelligence Markup Language
 
 *DURATION*: 4 WEEKS
 
-*MENTOR*: NEELA SANTOSH
+*MENTOR*: NEELA SANTOSH KUMAR
 
 
 
 
-# TEXT-SUMMARIZATION-TOOL
+# DESCRIPTION
 
 Text Summarizer is a Flask-based NLP application that automatically generates concise summaries from large bodies of text using state-of-the-art **abstractive** and **extractive** techniques. It supports raw text, PDF, and DOCX inputs, and features a clean, interactive web interface.
 ---
@@ -50,4 +50,7 @@ Install the required dependencies:
 
 ## output
 ![Image](https://github.com/user-attachments/assets/926a0663-aefe-4dd3-94bb-b668a90ed11d)
+
+
+This project was developed as part of Task 1 during my internship at CODTECH IT Solutions.
 
